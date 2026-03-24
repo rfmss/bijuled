@@ -55,9 +55,19 @@ html, body {
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* Game board blocks all touch to prevent page scroll during play */
+.game-board {
+  touch-action: none;
+}
+
+/* Level select needs vertical scroll */
+.chapter-scroll {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Screens ──────────────────────────────────────────────── */
@@ -556,6 +566,7 @@ button {
   grid-template-columns: repeat(8, var(--cell-size));
   grid-template-rows: repeat(8, var(--cell-size));
   gap: var(--cell-gap);
+  touch-action: none;
 }
 
 #particle-canvas {
@@ -978,4 +989,38 @@ button {
     --cell-size: 58px;
     --cell-gap: 3px;
   }
+}
+
+/* iPad mini 2 portrait: 768×1024 — safe zone para safari com barra */
+@media screen and (max-width: 768px) {
+  :root {
+    --cell-size: 68px;
+    --cell-gap: 4px;
+    --board-padding: 6px;
+  }
+  .menu-buttons { width: 260px; }
+  .logo-title { font-size: 44px; }
+}
+
+/* Small phones / landscape iPad mini */
+@media screen and (max-width: 600px) {
+  :root {
+    --cell-size: 54px;
+    --cell-gap: 3px;
+    --board-padding: 5px;
+  }
+}
+
+/* Landscape on iPad mini 2 (1024×768) */
+@media screen and (max-height: 768px) and (orientation: landscape) {
+  :root {
+    --cell-size: 56px;
+    --cell-gap: 3px;
+    --board-padding: 5px;
+  }
+  .game-hud { padding: 8px 16px; }
+  .objective-strip { padding: 6px 16px; }
+  .board-container { padding: 4px 12px; }
+  .boosts-bar { padding: 8px 16px 10px; gap: 12px; }
+  .boost-btn { padding: 6px 12px; min-width: 60px; }
 }

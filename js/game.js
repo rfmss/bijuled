@@ -31,6 +31,10 @@ const Game = {
   selectedCell: null,
   progress: null,
   cellEls: [],
+  _touchStartX: 0,
+  _touchStartY: 0,
+  _touchStartRow: -1,
+  _touchStartCol: -1,
 
   // ─── Init ─────────────────────────────────────────────────────
   init() {
@@ -222,11 +226,49 @@ const Game = {
         if (this.board.isBlocked(r, c)) {
           cell.classList.add('blocked');
         } else {
+          // Click fallback (desktop)
           cell.addEventListener('click', () => this.onCellClick(r, c));
+
+          // Touch: swipe = direct swap, tap = select/swap like click
           cell.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.onCellClick(r, c);
+            const t = e.touches[0];
+            this._touchStartX = t.clientX;
+            this._touchStartY = t.clientY;
+            this._touchStartRow = r;
+            this._touchStartCol = c;
           }, { passive: false });
+
+          cell.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const t = e.changedTouches[0];
+            const dx = t.clientX - this._touchStartX;
+            const dy = t.clientY - this._touchStartY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const sr = this._touchStartRow;
+            const sc = this._touchStartCol;
+
+            if (dist < 12) {
+              // Tap — use normal click logic
+              this.onCellClick(sr, sc);
+            } else {
+              // Swipe — resolve direction and swap directly
+              if (this.state !== STATE.PLAYING) return;
+              const absDx = Math.abs(dx);
+              const absDy = Math.abs(dy);
+              let tr = sr, tc = sc;
+              if (absDx > absDy) {
+                tc = dx > 0 ? sc + 1 : sc - 1;
+              } else {
+                tr = dy > 0 ? sr + 1 : sr - 1;
+              }
+              if (tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && !this.board.isBlocked(tr, tc)) {
+                this.deselectCell();
+                this.trySwap(sr, sc, tr, tc);
+              }
+            }
+          }, { passive: false });
+
           this.renderCell(cell, r, c);
         }
 
