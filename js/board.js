@@ -77,6 +77,7 @@ class Board {
 
   getType(r, c) {
     if (r < 0 || r >= this.size || c < 0 || c >= this.size) return -1;
+    if (!this.grid[r]) return -1; // row not yet initialized
     if (this.isBlocked(r, c) || !this.grid[r][c]) return -1;
     return this.grid[r][c].type;
   }
