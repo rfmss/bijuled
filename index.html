@@ -4,55 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Bijuled</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- ═══════════════════════════ MENU SCREEN ═══════════════════════════ -->
+  <!-- MENU -->
   <div id="screen-menu" class="screen active">
-    <div class="menu-bg">
-      <div class="bg-gems-float" id="bg-gems"></div>
-    </div>
     <div class="menu-content">
       <div class="logo-block">
         <div class="logo-icon">
-          <svg viewBox="0 0 80 80" width="80" height="80">
+          <svg viewBox="0 0 80 80" width="72" height="72">
             <defs>
-              <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#ffd700"/>
-                <stop offset="60%" stop-color="#d4a017"/>
-                <stop offset="100%" stop-color="#8b6914"/>
+              <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#d97757"/>
+                <stop offset="100%" stop-color="#b25c38"/>
               </linearGradient>
-              <filter id="logo-glow">
-                <feGaussianBlur stdDeviation="3" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
             </defs>
-            <polygon points="40,4 74,32 40,76 6,32" fill="url(#logo-grad)" filter="url(#logo-glow)"/>
-            <polygon points="40,12 66,34 40,62 14,34" fill="rgba(255,255,255,0.15)"/>
-            <polygon points="40,4 58,24 40,32 22,24" fill="rgba(255,255,255,0.35)"/>
-            <ellipse cx="30" cy="18" rx="6" ry="4" fill="rgba(255,255,255,0.6)" transform="rotate(-20,30,18)"/>
+            <polygon points="40,4 74,32 40,76 6,32" fill="url(#lg1)"/>
+            <polygon points="40,12 66,34 40,62 14,34" fill="rgba(255,255,255,0.12)"/>
+            <polygon points="40,4 58,24 40,32 22,24" fill="rgba(255,255,255,0.3)"/>
+            <ellipse cx="30" cy="18" rx="6" ry="4" fill="rgba(255,255,255,0.5)" transform="rotate(-20,30,18)"/>
           </svg>
         </div>
-        <h1 class="logo-title">BIJULED</h1>
-        <p class="logo-sub">Combine. Cascade. Conquer.</p>
+        <h1 class="logo-title">Bijuled</h1>
+        <p class="logo-sub">Combine. Cascade. Conquiste.</p>
       </div>
 
       <div class="menu-buttons">
         <button class="btn-primary btn-xl" id="btn-play">
           <span class="btn-icon-wrap">
-            <img src="assets/icons/play-circle.svg" width="22" height="22" alt="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
           </span>
           Jogar
         </button>
         <button class="btn-secondary" id="btn-levels">
           <span class="btn-icon-wrap">
-            <img src="assets/icons/list-numbers.svg" width="18" height="18" alt="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
           </span>
           Selecionar Fase
         </button>
@@ -64,11 +52,11 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════ LEVEL SELECT ═══════════════════════════ -->
+  <!-- LEVEL SELECT -->
   <div id="screen-levels" class="screen">
     <div class="screen-header-bar">
       <button class="btn-back" id="btn-back-menu">
-        <img src="assets/icons/arrow-left.svg" width="22" height="22" alt="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg>
       </button>
       <h2 class="screen-title">Fases</h2>
       <div class="header-spacer"></div>
@@ -78,39 +66,35 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════ GAME SCREEN ═══════════════════════════ -->
+  <!-- GAME -->
   <div id="screen-game" class="screen">
     <div class="game-wrapper">
 
-      <!-- Top HUD -->
       <div class="game-hud">
         <button class="hud-btn" id="btn-pause">
-          <img src="assets/icons/pause.svg" width="20" height="20" alt="Pausa">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256" fill="currentColor"><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></svg>
         </button>
-
         <div class="hud-stats">
           <div class="hud-stat">
-            <span class="hud-label">FASE</span>
+            <span class="hud-label">Fase</span>
             <span class="hud-value" id="hud-level">1</span>
           </div>
-          <div class="hud-stat hud-score-stat">
-            <span class="hud-label">PONTOS</span>
+          <div class="hud-stat">
+            <span class="hud-label">Pontos</span>
             <span class="hud-value gold" id="hud-score">0</span>
           </div>
           <div class="hud-stat">
-            <span class="hud-label">JOGADAS</span>
+            <span class="hud-label">Jogadas</span>
             <span class="hud-value" id="hud-moves">—</span>
           </div>
         </div>
-
         <div class="hud-lives" id="hud-lives">
-          <span class="life-heart active">♥</span>
-          <span class="life-heart active">♥</span>
-          <span class="life-heart active">♥</span>
+          <span class="life-heart active">&#9829;</span>
+          <span class="life-heart active">&#9829;</span>
+          <span class="life-heart active">&#9829;</span>
         </div>
       </div>
 
-      <!-- Objective -->
       <div class="objective-strip">
         <div class="obj-text" id="obj-text">Alcance 500 pontos</div>
         <div class="obj-progress-wrap">
@@ -121,7 +105,6 @@
         </div>
       </div>
 
-      <!-- Board Container -->
       <div class="board-container">
         <div class="board-frame">
           <div class="game-board" id="game-board"></div>
@@ -129,20 +112,19 @@
         </div>
       </div>
 
-      <!-- Boosts Bar -->
       <div class="boosts-bar">
         <button class="boost-btn" id="boost-hammer" data-type="hammer">
-          <span class="boost-emoji">🔨</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M213.66,82.34l-56-56a8,8,0,0,0-11.32,0l-96,96a8,8,0,0,0,0,11.32l56,56a8,8,0,0,0,11.32,0L213.66,93.66A8,8,0,0,0,213.66,82.34ZM152,176.69,79.31,104,128,55.31,200.69,128ZM48,224a8,8,0,0,1-8-8,24,24,0,0,0-24-24,8,8,0,0,1,0-16,40,40,0,0,1,40,40A8,8,0,0,1,48,224Z"/></svg>
           <span class="boost-label">Remover</span>
           <span class="boost-count" id="boost-count-hammer">3</span>
         </button>
         <button class="boost-btn" id="boost-shuffle" data-type="shuffle">
-          <span class="boost-emoji">🔀</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M237.66,178.34l-24,24a8,8,0,0,1-11.32-11.32L210.69,183H196.58a48.11,48.11,0,0,1-40-21.37l-55.49-81.06A32.07,32.07,0,0,0,74.42,65H32a8,8,0,0,1,0-16H74.42a48.11,48.11,0,0,1,40,21.37l55.49,81.06A32.07,32.07,0,0,0,196.58,167h14.11l-8.35-8.34a8,8,0,0,1,11.32-11.32l24,24A8,8,0,0,1,237.66,178.34ZM140,107a8,8,0,0,0,11.16-1.86l.1-.14A32.07,32.07,0,0,1,177.58,93h14.11l-8.35,8.34a8,8,0,0,0,11.32,11.32l24-24a8,8,0,0,0,0-11.32l-24-24a8,8,0,0,0-11.32,11.32L191.69,73H177.58a48.11,48.11,0,0,0-40,21.37l-.1.14A8,8,0,0,0,140,107Zm-40.54,42.83a8,8,0,0,0-11.15,1.83A32.07,32.07,0,0,1,61.42,165H32a8,8,0,0,0,0,16H61.42a48.11,48.11,0,0,0,40-21.37A8,8,0,0,0,99.46,149.83Z"/></svg>
           <span class="boost-label">Misturar</span>
           <span class="boost-count" id="boost-count-shuffle">2</span>
         </button>
         <button class="boost-btn" id="boost-bomb" data-type="bomb">
-          <span class="boost-emoji">💥</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M253.66,69.66l-28,28a8,8,0,0,1-11.32-11.32L226.69,74l-11.35-11.35a8,8,0,0,1,11.32-11.3L238,62.7l12-12a8,8,0,0,1,11.32,11.32ZM144,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,144,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,144,216Zm-24-80a24,24,0,1,1-24-24A24,24,0,0,1,120,136Z"/></svg>
           <span class="boost-label">Bomba</span>
           <span class="boost-count" id="boost-count-bomb">1</span>
         </button>
@@ -151,14 +133,12 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════ OVERLAYS ═══════════════════════════ -->
-
-  <!-- Pause -->
+  <!-- PAUSE OVERLAY -->
   <div id="overlay-pause" class="overlay hidden">
     <div class="overlay-backdrop"></div>
     <div class="overlay-card">
       <div class="overlay-icon">
-        <img src="assets/icons/pause-circle.svg" width="48" height="48" alt="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 256 256" fill="#d97757"><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></svg>
       </div>
       <h2 class="overlay-title">Pausado</h2>
       <div class="overlay-actions">
@@ -169,14 +149,14 @@
     </div>
   </div>
 
-  <!-- Level Complete -->
+  <!-- LEVEL COMPLETE -->
   <div id="overlay-complete" class="overlay hidden">
     <div class="overlay-backdrop"></div>
-    <div class="overlay-card success">
+    <div class="overlay-card">
       <div class="stars-row" id="stars-row">
-        <span class="star" id="star-1">★</span>
-        <span class="star" id="star-2">★</span>
-        <span class="star" id="star-3">★</span>
+        <span class="star" id="star-1">&#9733;</span>
+        <span class="star" id="star-2">&#9733;</span>
+        <span class="star" id="star-3">&#9733;</span>
       </div>
       <h2 class="overlay-title">Fase Concluída!</h2>
       <div class="complete-score">
@@ -190,12 +170,12 @@
     </div>
   </div>
 
-  <!-- Game Over -->
+  <!-- GAME OVER -->
   <div id="overlay-gameover" class="overlay hidden">
     <div class="overlay-backdrop"></div>
-    <div class="overlay-card danger">
-      <div class="overlay-icon pulse-red">
-        <img src="assets/icons/x-circle.svg" width="48" height="48" alt="">
+    <div class="overlay-card">
+      <div class="overlay-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 256 256" fill="#d97757"><path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"/></svg>
       </div>
       <h2 class="overlay-title">Fim de Jogo</h2>
       <p class="overlay-sub" id="gameover-msg">Sem movimentos disponíveis</p>
@@ -206,10 +186,16 @@
     </div>
   </div>
 
-  <!-- Combo Popup -->
+  <!-- COMBO -->
   <div id="combo-popup" class="combo-popup hidden">
     <span id="combo-text">COMBO x2!</span>
   </div>
+
+  <script>
+  // Random bg from rfmss palette
+  var BG = ['#b2c9c3','#c9bfb0','#b8c4ce','#c4bac9','#c9c4b0','#b8c9b8','#cec0b4'];
+  document.body.style.backgroundColor = BG[Math.floor(Math.random() * BG.length)];
+  </script>
 
   <script src="js/gems.js"></script>
   <script src="js/levels.js"></script>
