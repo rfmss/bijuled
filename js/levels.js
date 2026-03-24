@@ -35,9 +35,9 @@ function makeLevel(id, opts) {
     gemTypes: opts.gemTypes || 5,
     blocked: opts.blocked || [],
     starThresholds: opts.stars || [
-      Math.floor(opts.objective?.target * 0.5),
-      Math.floor(opts.objective?.target * 0.8),
-      opts.objective?.target
+      Math.floor((opts.objective && opts.objective.target || 0) * 0.5),
+      Math.floor((opts.objective && opts.objective.target || 0) * 0.8),
+      (opts.objective && opts.objective.target || 0)
     ]
   };
 }

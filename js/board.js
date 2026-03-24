@@ -248,7 +248,7 @@ class Board {
         // Clear all gems of the type that was swapped with
         let targetType = cell.type;
         if (swapCell) {
-          const swapGem = this.grid[swapCell.r]?.[swapCell.c];
+          const swapGem = this.grid[swapCell.r] && this.grid[swapCell.r][swapCell.c];
           if (swapGem) targetType = swapGem.type;
         }
         for (let rr = 0; rr < this.size; rr++) {
@@ -273,13 +273,12 @@ class Board {
     // Create special gem if applicable (use removed array since grid is already null)
     const created = [];
     if (specialGem) {
-      const gemType =
-        removed.find(g => g.r === specialGem.r && g.c === specialGem.c)?.type
-        ?? removed[0]?.type
-        ?? 0;
+      const foundGem = removed.find(g => g.r === specialGem.r && g.c === specialGem.c);
+      const gemType = (foundGem && foundGem.type !== undefined ? foundGem.type :
+        (removed[0] ? removed[0].type : 0));
 
       this.grid[specialGem.r][specialGem.c] = { type: gemType, special: specialGem.special };
-      created.push({ ...specialGem, type: gemType });
+      created.push(Object.assign({}, specialGem, { type: gemType }));
     }
 
     return { removed, created, bonus };
@@ -375,7 +374,7 @@ class Board {
     for (let r = 0; r < this.size; r++) {
       for (let c = 0; c < this.size; c++) {
         if (!this.isBlocked(r, c) && this.grid[r][c]) {
-          gems.push({ ...this.grid[r][c] });
+          gems.push(Object.assign({}, this.grid[r][c]));
           this.grid[r][c] = null;
         }
       }
@@ -403,7 +402,7 @@ class Board {
    */
   removeSingle(r, c) {
     if (this.isBlocked(r, c) || !this.grid[r][c]) return null;
-    const gem = { ...this.grid[r][c], r, c };
+    const gem = Object.assign({}, this.grid[r][c], { r: r, c: c });
     this.grid[r][c] = null;
     return gem;
   }
