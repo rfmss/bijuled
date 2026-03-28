@@ -6,14 +6,16 @@
 -webkit-tap-highlight-color: transparent;
 
 :root {
-  --bg:      #b2c9c3;
-  --surface: #f4efe6;
-  --text:    #1a1a1a;
-  --muted:   #555;
-  --accent:  #d97757;
-  --found:   #5a8a6a;
-  --border:  rgba(0,0,0,0.08);
-  --radius:  12px;
+  --bg:        #b2c9c3;
+  --surface:   #f4efe6;
+  --text:      #1a1a1a;
+  --muted:     #555;
+  --accent:    #d97757;
+  --found:     #5a8a6a;
+  --border:    rgba(0,0,0,0.08);
+  --radius:    12px;
+  --cell-size: 68px;
+  --cell-gap:  3px;
 }
 
 html, body {
@@ -411,11 +413,21 @@ html, body {
   align-items: center;
   -webkit-justify-content: center;
   justify-content: center;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  margin: calc(var(--cell-gap) / 2);
   border-radius: 8px;
   cursor: pointer;
   -webkit-transition: -webkit-transform 0.12s, transform 0.12s;
   transition: transform 0.12s;
   position: relative;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+}
+.gem-svg {
+  width: calc(var(--cell-size) - 10px);
+  height: calc(var(--cell-size) - 10px);
+  display: block;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
 }
@@ -645,6 +657,23 @@ html, body {
   transform: translateX(-50%) scale(1);
 }
 .combo-popup.hidden { display: none; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+/* ≤ 600px phones */
+@media screen and (max-width: 600px) {
+  :root { --cell-size: 44px; --cell-gap: 2px; }
+  .board-container { padding: 6px; }
+}
+/* ≤ 430px small phones */
+@media screen and (max-width: 430px) {
+  :root { --cell-size: 40px; --cell-gap: 2px; }
+  .board-container { padding: 4px; }
+}
+/* ≤ 360px budget phones */
+@media screen and (max-width: 360px) {
+  :root { --cell-size: 36px; --cell-gap: 2px; }
+  .board-container { padding: 2px; }
+}
 
 /* ── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }

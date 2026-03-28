@@ -192,10 +192,11 @@ var Game = {
     boardEl.innerHTML = '';
     this.cellEls = [];
     var canvas = document.getElementById('particle-canvas');
-    var cellSize = 72;
-    var cellGap = 4;
-    var boardPad = 8;
-    var boardPx = 8 * cellSize + 7 * cellGap;
+    var _cs = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_cs.getPropertyValue('--cell-size')) || 68;
+    var cellGap  = parseInt(_cs.getPropertyValue('--cell-gap'))  || 3;
+    var boardPad = 6;
+    var boardPx = 8 * cellSize + 8 * cellGap;
     var framePx = boardPx + 2 * boardPad;
     canvas.width = framePx;
     canvas.height = framePx;
@@ -478,12 +479,14 @@ var Game = {
   showScorePopup: function showScorePopup(score, r, c) {
     var boardFrame = document.querySelector('.board-frame');
     if (!boardFrame) return;
-    var cellSize = 76;
+    var _csP = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_csP.getPropertyValue('--cell-size')) || 68;
+    var cellGapP = parseInt(_csP.getPropertyValue('--cell-gap')) || 3;
     var popup = document.createElement('div');
     popup.className = 'score-popup';
     popup.textContent = '+' + score;
-    popup.style.left = c * cellSize + cellSize / 2 + 8 + 'px';
-    popup.style.top = r * cellSize + cellSize / 2 + 8 + 'px';
+    popup.style.left = (6 + c * (cellSize + cellGapP) + cellSize / 2) + 'px';
+    popup.style.top  = (6 + r * (cellSize + cellGapP) + cellSize / 2) + 'px';
     boardFrame.appendChild(popup);
     setTimeout(function () {
       if (popup.parentNode) popup.parentNode.removeChild(popup);
@@ -494,9 +497,10 @@ var Game = {
     var canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
-    var cellSize = 72;
-    var gap = 4;
-    var padding = 8;
+    var _csB = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_csB.getPropertyValue('--cell-size')) || 68;
+    var gap = parseInt(_csB.getPropertyValue('--cell-gap')) || 3;
+    var padding = 6;
     var particles = [];
     var self = this;
     matches.forEach(function (m) {
