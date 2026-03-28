@@ -812,6 +812,11 @@ var Game = {
     document.getElementById('btn-pause').addEventListener('click', function () {
       self.pauseGame();
     });
+    document.getElementById('btn-radio').addEventListener('click', function () {
+      var muted = RadioBG.toggleMute();
+      document.getElementById('icon-sound-on').style.display  = muted ? 'none' : '';
+      document.getElementById('icon-sound-off').style.display = muted ? '' : 'none';
+    });
     document.getElementById('btn-resume').addEventListener('click', function () {
       self.resumeGame();
     });

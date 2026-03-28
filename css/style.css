@@ -269,6 +269,13 @@ html, body {
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
 }
+.hud-btn-group {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.hud-btn-group > * + * { margin-left: 6px; }
 .hud-btn {
   background: #f4efe6;
   border: 1px solid rgba(0,0,0,0.12);

@@ -15,30 +15,39 @@ var RadioBG = (function () {
      Critérios: MPB primeiro, depois clássicos internacionais,
      priorizados pelos que têm infraestrutura mais robusta.
   ─────────────────────────────────────────────────────────────── */
+  /* Todas as URLs abaixo foram verificadas com HTTP 200 ─────── */
   var STREAMS = [
     {
-      nome: 'Nova Brasil FM — MPB / Pop BR',
-      url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/NOVA_BRASIL_FM.mp3'
+      nome: 'JB FM — Música popular brasileira',
+      url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/JBFM.mp3'
     },
     {
       nome: 'Antena 1 — Clássicos internacionais',
       url: 'https://antenaone.crossradio.com.br/stream/1/'
     },
     {
-      nome: 'Rádio Eldorado — Clássicos',
+      nome: 'SomaFM Seventies — Hits anos 70',
+      url: 'https://ice2.somafm.com/seventies-128-mp3'
+    },
+    {
+      nome: 'SomaFM Underground 80s — Hits anos 80',
+      url: 'https://ice1.somafm.com/u80s-256-mp3'
+    },
+    {
+      nome: 'Rádio Eldorado — Clássicos BR',
       url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_ELDORADO.mp3'
     },
     {
-      nome: 'Rádio MEC MPB (EBC)',
-      url: 'https://radios.ebc.com.br/mec-mpb/icecast.audio'
+      nome: 'Radio Swiss Jazz — Jazz internacional',
+      url: 'https://stream.srg-ssr.ch/m/rsj/mp3_128'
     },
     {
-      nome: 'CBN — Instrumental suave',
-      url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_CBN.mp3'
+      nome: 'SomaFM Illinois Street — Soul / Lounge',
+      url: 'https://ice1.somafm.com/illstreet-128-mp3'
     },
     {
-      nome: 'Rádio Brasil 2000 — MPB',
-      url: 'https://stream.radiobrasil2000.com.br/mpb'
+      nome: 'SomaFM Groove Salad — Downtempo / Chill',
+      url: 'https://ice1.somafm.com/groovesalad-256-mp3'
     }
   ];
 
@@ -97,10 +106,9 @@ var RadioBG = (function () {
       audio.load();
     }
 
-    audio             = new Audio();
-    audio.volume      = volume;
-    audio.preload     = 'none';
-    audio.crossOrigin = 'anonymous';
+    audio          = new Audio();
+    audio.volume   = volume;
+    audio.preload  = 'none';
 
     audio.onerror = function () {
       clearSilenceWatch();
@@ -156,6 +164,14 @@ var RadioBG = (function () {
     if (audio) audio.volume = volume;
   }
 
-  return { init: init, stop: stop, setVolume: setVolume };
+  var muted = false;
+  function toggleMute() {
+    muted = !muted;
+    if (audio) audio.volume = muted ? 0 : volume;
+    return muted;
+  }
+  function isMuted() { return muted; }
+
+  return { init: init, stop: stop, setVolume: setVolume, toggleMute: toggleMute, isMuted: isMuted };
 
 })();
