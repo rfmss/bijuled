@@ -12,60 +12,60 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var GEMS = [{
   id: 0,
   name: 'ruby',
-  label: 'Rubi',
-  color: '#e53935',
-  glow: 'rgba(229,57,53,0.7)',
-  svgGradient: ['#ff8a80', '#e53935', '#b71c1c'],
+  label: 'Terra',
+  color: '#cd7b5f',
+  glow: 'rgba(205,123,95,0.8)',
+  svgGradient: ['#e8a890', '#cd7b5f', '#8a4535'],
   createSVG: function createSVG() {
     return createGem('ruby');
   }
 }, {
   id: 1,
   name: 'emerald',
-  label: 'Esmeralda',
-  color: '#43a047',
-  glow: 'rgba(67,160,71,0.7)',
-  svgGradient: ['#a5d6a7', '#43a047', '#1b5e20'],
+  label: 'Sage',
+  color: '#8fb3ae',
+  glow: 'rgba(143,179,174,0.8)',
+  svgGradient: ['#b8d4d0', '#8fb3ae', '#4d7a75'],
   createSVG: function createSVG() {
     return createGem('emerald');
   }
 }, {
   id: 2,
   name: 'sapphire',
-  label: 'Safira',
-  color: '#1e88e5',
-  glow: 'rgba(30,136,229,0.7)',
-  svgGradient: ['#90caf9', '#1e88e5', '#0d47a1'],
+  label: 'Azul',
+  color: '#6b9ab8',
+  glow: 'rgba(107,154,184,0.8)',
+  svgGradient: ['#98c0d8', '#6b9ab8', '#3d6a8a'],
   createSVG: function createSVG() {
     return createGem('sapphire');
   }
 }, {
   id: 3,
   name: 'topaz',
-  label: 'Topázio',
-  color: '#ff8f00',
-  glow: 'rgba(255,143,0,0.7)',
-  svgGradient: ['#ffe082', '#ff8f00', '#e65100'],
+  label: 'Ouro',
+  color: '#d4af37',
+  glow: 'rgba(212,175,55,0.8)',
+  svgGradient: ['#f0d870', '#d4af37', '#8a6a10'],
   createSVG: function createSVG() {
     return createGem('topaz');
   }
 }, {
   id: 4,
   name: 'amethyst',
-  label: 'Ametista',
-  color: '#8e24aa',
-  glow: 'rgba(142,36,170,0.7)',
-  svgGradient: ['#ce93d8', '#8e24aa', '#4a148c'],
+  label: 'Lavanda',
+  color: '#9b8fc4',
+  glow: 'rgba(155,143,196,0.8)',
+  svgGradient: ['#c0b8de', '#9b8fc4', '#5a4a8a'],
   createSVG: function createSVG() {
     return createGem('amethyst');
   }
 }, {
   id: 5,
   name: 'diamond',
-  label: 'Diamante',
-  color: '#00bcd4',
-  glow: 'rgba(0,188,212,0.7)',
-  svgGradient: ['#ffffff', '#80deea', '#00bcd4'],
+  label: 'Rosa',
+  color: '#c4708a',
+  glow: 'rgba(196,112,138,0.8)',
+  svgGradient: ['#dfa0b8', '#c4708a', '#8a3a58'],
   createSVG: function createSVG() {
     return createGem('diamond');
   }

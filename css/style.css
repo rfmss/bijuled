@@ -245,7 +245,7 @@ html, body {
 .level-stars > * + * { margin-left: 1px; }
 
 /* ── GAME SCREEN ────────────────────────────────────────── */
-#screen-game { background: #b2c9c3; overflow: hidden; }
+#screen-game { background: #1a1410; overflow: hidden; }
 .game-wrapper {
   display: -webkit-flex;
   display: flex;
@@ -385,10 +385,11 @@ html, body {
 }
 .board-frame {
   position: relative;
-  background: rgba(244,239,230,0.5);
+  background: #0d0b08;
   border-radius: 12px;
   padding: 6px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 2px solid rgba(217,119,87,0.25);
+  box-shadow: 0 0 40px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.4);
 }
 .game-board {
   display: -webkit-flex;
@@ -416,29 +417,34 @@ html, body {
   width: var(--cell-size);
   height: var(--cell-size);
   margin: calc(var(--cell-gap) / 2);
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   -webkit-transition: -webkit-transform 0.12s, transform 0.12s;
   transition: transform 0.12s;
   position: relative;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 .gem-svg {
-  width: calc(var(--cell-size) - 10px);
-  height: calc(var(--cell-size) - 10px);
+  width: calc(var(--cell-size) - 8px);
+  height: calc(var(--cell-size) - 8px);
   display: block;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 .gem-cell.selected {
-  -webkit-transform: scale(1.08);
-  transform: scale(1.08);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
   z-index: 10;
-  box-shadow: 0 0 0 3px #d97757;
+  background: rgba(217,119,87,0.2);
+  border-color: #d97757;
+  box-shadow: 0 0 12px rgba(217,119,87,0.5);
 }
-.gem-cell.hint { box-shadow: 0 0 0 2px rgba(217,119,87,0.6); }
-.gem-cell.blocked { background: rgba(0,0,0,0.12) !important; cursor: default; }
+.gem-cell.hint { border-color: rgba(217,119,87,0.5); }
+.gem-cell.blocked { background: rgba(0,0,0,0.4) !important; border-color: transparent; cursor: default; }
 .gem-cell.removing {
   -webkit-transform: scale(0);
   transform: scale(0);
