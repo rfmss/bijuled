@@ -1036,6 +1036,16 @@ button {
   .board-container { padding: 4px 6px; }
 }
 
+/* Budget Android phones (≤ 360px) */
+@media screen and (max-width: 360px) {
+  :root {
+    --cell-size: 38px;
+    --cell-gap: 2px;
+    --board-padding: 3px;
+  }
+  .board-container { padding: 2px 4px; }
+}
+
 /* Landscape on iPad mini 2 (1024×768) */
 @media screen and (max-height: 768px) and (orientation: landscape) {
   :root {
