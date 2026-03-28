@@ -386,6 +386,11 @@ var Game = {
       if (el) el.classList.add('matched');
     });
     return self.delay(280).then(function () {
+      // Remove matched class NOW so subsequent refreshBoard calls don't re-apply gemPop to new gems
+      matches.forEach(function (m) {
+        var el = cellEl(self.cellEls, m.r, m.c);
+        if (el) el.classList.remove('matched');
+      });
       self.burstParticles(matches);
       var score = calcMatchScore(matches.length, self.cascade);
       self.addScore(score);
@@ -403,6 +408,16 @@ var Game = {
       }
       self.cascade++;
       if (self.cascade >= 2) self.showCombo('COMBO x' + self.cascade + '!');
+      // Elogio por jogada — tier baseado em tamanho da combinação e cascata
+      if (typeof Compliments !== 'undefined') {
+        var complimentTier = 0;
+        if (result.created.length > 0 || self.cascade >= 3) {
+          complimentTier = 2;
+        } else if (matches.length >= 4 || self.cascade >= 2) {
+          complimentTier = 1;
+        }
+        Compliments.show(complimentTier);
+      }
       self.refreshBoard();
       var falls = self.board.applyGravity();
       falls.forEach(function (f) {

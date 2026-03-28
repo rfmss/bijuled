@@ -113,27 +113,59 @@
 
       <div class="board-container">
         <div class="board-frame">
+          <div id="compliment-display" class="compliment-display"></div>
           <div class="game-board" id="game-board"></div>
           <canvas id="particle-canvas"></canvas>
         </div>
       </div>
 
       <div class="boosts-bar">
-        <button class="boost-btn" id="boost-hammer" data-type="hammer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M213.66,82.34l-56-56a8,8,0,0,0-11.32,0l-96,96a8,8,0,0,0,0,11.32l56,56a8,8,0,0,0,11.32,0L213.66,93.66A8,8,0,0,0,213.66,82.34ZM152,176.69,79.31,104,128,55.31,200.69,128ZM48,224a8,8,0,0,1-8-8,24,24,0,0,0-24-24,8,8,0,0,1,0-16,40,40,0,0,1,40,40A8,8,0,0,1,48,224Z"/></svg>
-          <span class="boost-label">Remover</span>
+
+        <!-- REMOVER: tap to activate, then tap a gem to destroy it -->
+        <button class="boost-btn boost-hammer-btn" id="boost-hammer" data-type="hammer">
           <span class="boost-count" id="boost-count-hammer">3</span>
+          <div class="boost-icon-wrap">
+            <!-- hammer head -->
+            <svg class="boost-icon boost-icon-hammer" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M213.66,82.34l-56-56a8,8,0,0,0-11.32,0l-96,96a8,8,0,0,0,0,11.32l56,56a8,8,0,0,0,11.32,0L213.66,93.66A8,8,0,0,0,213.66,82.34ZM152,176.69,79.31,104,128,55.31,200.69,128ZM48,224a8,8,0,0,1-8-8,24,24,0,0,0-24-24,8,8,0,0,1,0-16,40,40,0,0,1,40,40A8,8,0,0,1,48,224Z"/>
+            </svg>
+            <!-- impact stars that appear on active -->
+            <div class="boost-impact-stars">
+              <span class="star s1">&#10022;</span>
+              <span class="star s2">&#10022;</span>
+              <span class="star s3">&#10022;</span>
+            </div>
+          </div>
+          <span class="boost-label">Remover</span>
+          <span class="boost-hint">toque 1 pedra</span>
         </button>
-        <button class="boost-btn" id="boost-shuffle" data-type="shuffle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M237.66,178.34l-24,24a8,8,0,0,1-11.32-11.32L210.69,183H196.58a48.11,48.11,0,0,1-40-21.37l-55.49-81.06A32.07,32.07,0,0,0,74.42,65H32a8,8,0,0,1,0-16H74.42a48.11,48.11,0,0,1,40,21.37l55.49,81.06A32.07,32.07,0,0,0,196.58,167h14.11l-8.35-8.34a8,8,0,0,1,11.32-11.32l24,24A8,8,0,0,1,237.66,178.34ZM140,107a8,8,0,0,0,11.16-1.86l.1-.14A32.07,32.07,0,0,1,177.58,93h14.11l-8.35,8.34a8,8,0,0,0,11.32,11.32l24-24a8,8,0,0,0,0-11.32l-24-24a8,8,0,0,0-11.32,11.32L191.69,73H177.58a48.11,48.11,0,0,0-40,21.37l-.1.14A8,8,0,0,0,140,107Zm-40.54,42.83a8,8,0,0,0-11.15,1.83A32.07,32.07,0,0,1,61.42,165H32a8,8,0,0,0,0,16H61.42a48.11,48.11,0,0,0,40-21.37A8,8,0,0,0,99.46,149.83Z"/></svg>
-          <span class="boost-label">Misturar</span>
+
+        <!-- MISTURAR: immediately shuffles all gems -->
+        <button class="boost-btn boost-shuffle-btn" id="boost-shuffle" data-type="shuffle">
           <span class="boost-count" id="boost-count-shuffle">2</span>
+          <div class="boost-icon-wrap">
+            <svg class="boost-icon boost-icon-shuffle" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M237.66,178.34l-24,24a8,8,0,0,1-11.32-11.32L210.69,183H196.58a48.11,48.11,0,0,1-40-21.37l-55.49-81.06A32.07,32.07,0,0,0,74.42,65H32a8,8,0,0,1,0-16H74.42a48.11,48.11,0,0,1,40,21.37l55.49,81.06A32.07,32.07,0,0,0,196.58,167h14.11l-8.35-8.34a8,8,0,0,1,11.32-11.32l24,24A8,8,0,0,1,237.66,178.34ZM140,107a8,8,0,0,0,11.16-1.86l.1-.14A32.07,32.07,0,0,1,177.58,93h14.11l-8.35,8.34a8,8,0,0,0,11.32,11.32l24-24a8,8,0,0,0,0-11.32l-24-24a8,8,0,0,0-11.32,11.32L191.69,73H177.58a48.11,48.11,0,0,0-40,21.37l-.1.14A8,8,0,0,0,140,107Zm-40.54,42.83a8,8,0,0,0-11.15,1.83A32.07,32.07,0,0,1,61.42,165H32a8,8,0,0,0,0,16H61.42a48.11,48.11,0,0,0,40-21.37A8,8,0,0,0,99.46,149.83Z"/>
+            </svg>
+          </div>
+          <span class="boost-label">Misturar</span>
+          <span class="boost-hint">embaralha tudo</span>
         </button>
-        <button class="boost-btn" id="boost-bomb" data-type="bomb">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" fill="#d97757"><path d="M253.66,69.66l-28,28a8,8,0,0,1-11.32-11.32L226.69,74l-11.35-11.35a8,8,0,0,1,11.32-11.3L238,62.7l12-12a8,8,0,0,1,11.32,11.32ZM144,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,144,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,144,216Zm-24-80a24,24,0,1,1-24-24A24,24,0,0,1,120,136Z"/></svg>
-          <span class="boost-label">Bomba</span>
+
+        <!-- BOMBA: tap to activate, then tap a gem to blast 3×3 area -->
+        <button class="boost-btn boost-bomb-btn" id="boost-bomb" data-type="bomb">
           <span class="boost-count" id="boost-count-bomb">1</span>
+          <div class="boost-icon-wrap">
+            <svg class="boost-icon boost-icon-bomb" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M253.66,69.66l-28,28a8,8,0,0,1-11.32-11.32L226.69,74l-11.35-11.35a8,8,0,0,1,11.32-11.3L238,62.7l12-12a8,8,0,0,1,11.32,11.32ZM144,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,144,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,144,216Zm-24-80a24,24,0,1,1-24-24A24,24,0,0,1,120,136Z"/>
+            </svg>
+            <!-- explosion ring -->
+            <div class="boost-explosion-ring"></div>
+          </div>
+          <span class="boost-label">Bomba</span>
+          <span class="boost-hint">explode 3×3</span>
         </button>
+
       </div>
 
     </div>
@@ -208,5 +240,6 @@
   <script src="js/board.js"></script>
   <script src="js/game.js"></script>
   <script src="js/radio.js"></script>
+  <script src="js/compliments.js"></script>
 </body>
 </html>
