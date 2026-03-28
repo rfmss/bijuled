@@ -3,7 +3,6 @@
    iPad mini 2012 / iOS 9.3.5 first — ES5, no Grid, no gap
 ═══════════════════════════════════════════════════════════ */
 *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
--webkit-tap-highlight-color: transparent;
 
 :root {
   --bg:        #b2c9c3;

@@ -229,18 +229,21 @@ function createGem(type) {
   var s = shape.spec;
   var specular = "<ellipse cx=\"".concat(s.cx, "\" cy=\"").concat(s.cy, "\" rx=\"").concat(s.rx, "\" ry=\"").concat(s.ry, "\" fill=\"rgba(255,255,255,0.7)\" transform=\"rotate(").concat(s.angle, ",").concat(s.cx, ",").concat(s.cy, ")\"/>");
 
-  // Special gem overlay
+  // Special gem overlay — SVG paths centered at (50,50) in 100x100 viewBox
   var specialOverlay = '';
   if (special === 'row') {
-    specialOverlay = "<text x=\"50\" y=\"54\" text-anchor=\"middle\" font-size=\"18\" fill=\"rgba(255,255,255,0.9)\" font-family=\"Arial\">\u25B6\u25C0</text>";
+    // Horizontal double arrow ←→
+    specialOverlay = "<path d=\"M16,50 L30,40 L30,46 L70,46 L70,40 L84,50 L70,60 L70,54 L30,54 L30,60 Z\" fill=\"rgba(255,255,255,0.92)\"/>";
   } else if (special === 'col') {
-    specialOverlay = "<text x=\"50\" y=\"54\" text-anchor=\"middle\" font-size=\"18\" fill=\"rgba(255,255,255,0.9)\" font-family=\"Arial\" transform=\"rotate(90,50,50)\">\u25B6\u25C0</text>";
+    // Vertical double arrow ↑↓
+    specialOverlay = "<path d=\"M50,16 L60,30 L54,30 L54,70 L60,70 L50,84 L40,70 L46,70 L46,30 L40,30 Z\" fill=\"rgba(255,255,255,0.92)\"/>";
   } else if (special === 'bomb') {
-    specialOverlay = "<circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"none\" stroke=\"rgba(255,255,255,0.6)\" stroke-width=\"2\" stroke-dasharray=\"4 3\"/>";
+    // Concentric dashed ring + center dot
+    specialOverlay = "<circle cx=\"50\" cy=\"50\" r=\"21\" fill=\"none\" stroke=\"rgba(255,255,255,0.7)\" stroke-width=\"2.5\" stroke-dasharray=\"5 3\"/><circle cx=\"50\" cy=\"50\" r=\"7\" fill=\"rgba(255,255,255,0.75)\"/>";
   } else if (special === 'rainbow') {
-    specialOverlay = "<circle cx=\"50\" cy=\"50\" r=\"18\" fill=\"url(#rainbow-grad)\" opacity=\"0.7\"/>";
+    specialOverlay = "<circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"url(#rainbow-grad)\" opacity=\"0.78\"/>";
   }
-  return "<svg class=\"gem-svg\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n  <defs>\n    <linearGradient id=\"".concat(gid, "\" x1=\"0.2\" y1=\"0\" x2=\"0.8\" y2=\"1\">\n      <stop offset=\"0%\" stop-color=\"").concat(c1, "\"/>\n      <stop offset=\"45%\" stop-color=\"").concat(c2, "\"/>\n      <stop offset=\"100%\" stop-color=\"").concat(c3, "\"/>\n    </linearGradient>\n    <filter id=\"shadow-").concat(gid, "\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n      <feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"3\" flood-color=\"").concat(gem.color, "\" flood-opacity=\"0.5\"/>\n    </filter>\n    <radialGradient id=\"rainbow-grad\" cx=\"50%\" cy=\"50%\" r=\"50%\">\n      <stop offset=\"0%\" stop-color=\"#ff0000\"/>\n      <stop offset=\"16%\" stop-color=\"#ff7f00\"/>\n      <stop offset=\"33%\" stop-color=\"#ffff00\"/>\n      <stop offset=\"50%\" stop-color=\"#00ff00\"/>\n      <stop offset=\"66%\" stop-color=\"#0000ff\"/>\n      <stop offset=\"83%\" stop-color=\"#8b00ff\"/>\n      <stop offset=\"100%\" stop-color=\"#ff0000\"/>\n    </radialGradient>\n  </defs>\n  <g filter=\"url(#shadow-").concat(gid, ")\">\n    ").concat(mainShape, "\n    ").concat(facetLines, "\n    ").concat(highlightShape, "\n    ").concat(specular, "\n    ").concat(specialOverlay, "\n  </g>\n</svg>");
+  return "<svg class=\"gem-svg\" viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" overflow=\"hidden\">\n  <defs>\n    <linearGradient id=\"".concat(gid, "\" x1=\"0.2\" y1=\"0\" x2=\"0.8\" y2=\"1\">\n      <stop offset=\"0%\" stop-color=\"").concat(c1, "\"/>\n      <stop offset=\"45%\" stop-color=\"").concat(c2, "\"/>\n      <stop offset=\"100%\" stop-color=\"").concat(c3, "\"/>\n    </linearGradient>\n    <filter id=\"shadow-").concat(gid, "\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\">\n      <feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"3\" flood-color=\"").concat(gem.color, "\" flood-opacity=\"0.5\"/>\n    </filter>\n    <radialGradient id=\"rainbow-grad\" cx=\"50%\" cy=\"50%\" r=\"50%\">\n      <stop offset=\"0%\" stop-color=\"#ff0000\"/>\n      <stop offset=\"16%\" stop-color=\"#ff7f00\"/>\n      <stop offset=\"33%\" stop-color=\"#ffff00\"/>\n      <stop offset=\"50%\" stop-color=\"#00ff00\"/>\n      <stop offset=\"66%\" stop-color=\"#0000ff\"/>\n      <stop offset=\"83%\" stop-color=\"#8b00ff\"/>\n      <stop offset=\"100%\" stop-color=\"#ff0000\"/>\n    </radialGradient>\n  </defs>\n  <g filter=\"url(#shadow-").concat(gid, ")\">\n    ").concat(mainShape, "\n    ").concat(facetLines, "\n    ").concat(highlightShape, "\n    ").concat(specular, "\n    ").concat(specialOverlay, "\n  </g>\n</svg>");
 }
 
 /**
