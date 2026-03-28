@@ -19,6 +19,15 @@ function cellEl(cellEls, r, c) {
   return cellEls[r] && cellEls[r][c] || null;
 }
 
+// ─── Helper: walk up DOM to find .gem-cell (no Element.closest on iOS9) ──
+function findGemCell(el) {
+  while (el && el !== document.body) {
+    if (el.classList && el.classList.contains('gem-cell')) return el;
+    el = el.parentElement;
+  }
+  return null;
+}
+
 // ─── Helper: forEach on NodeList/HTMLCollection (iOS 9) ───────────
 function eachEl(list, fn) {
   Array.prototype.forEach.call(list, fn);
@@ -49,6 +58,20 @@ var Game = {
   _touchStartY: 0,
   _touchStartRow: -1,
   _touchStartCol: -1,
+  // Drag ghost state
+  _dragging: false,
+  _dragRow: -1,
+  _dragCol: -1,
+  _dragStartX: 0,
+  _dragStartY: 0,
+  _dragGhost: null,
+  _dragLastOverEl: null,
+  _dragTargetRow: -1,
+  _dragTargetCol: -1,
+  _onMouseMoveDrag: null,
+  _onMouseUpDrag: null,
+  _onTouchMoveDrag: null,
+  _onTouchEndDrag: null,
   // ─── Init ─────────────────────────────────────────────────────
   init: function init() {
     this.progress = Progress.load();
@@ -215,43 +238,17 @@ var Game = {
           if (self.board.isBlocked(row, col)) {
             cell.classList.add('blocked');
           } else {
-            cell.addEventListener('click', function () {
-              self.onCellClick(row, col);
-            });
+            // Mouse drag
+            cell.addEventListener('mousedown', function (e) {
+              if (e.button !== 0) return;
+              e.preventDefault();
+              self.startDrag(row, col, e.clientX, e.clientY);
+            }, false);
+            // Touch drag
             cell.addEventListener('touchstart', function (e) {
               e.preventDefault();
               var t = e.touches[0];
-              self._touchStartX = t.clientX;
-              self._touchStartY = t.clientY;
-              self._touchStartRow = row;
-              self._touchStartCol = col;
-            }, false);
-            cell.addEventListener('touchend', function (e) {
-              e.preventDefault();
-              var t = e.changedTouches[0];
-              var dx = t.clientX - self._touchStartX;
-              var dy = t.clientY - self._touchStartY;
-              var dist = Math.sqrt(dx * dx + dy * dy);
-              var sr = self._touchStartRow;
-              var sc = self._touchStartCol;
-              if (dist < 12) {
-                self.onCellClick(sr, sc);
-              } else {
-                if (self.state !== STATE.PLAYING) return;
-                var absDx = Math.abs(dx);
-                var absDy = Math.abs(dy);
-                var tr = sr,
-                  tc = sc;
-                if (absDx > absDy) {
-                  tc = dx > 0 ? sc + 1 : sc - 1;
-                } else {
-                  tr = dy > 0 ? sr + 1 : sr - 1;
-                }
-                if (tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && !self.board.isBlocked(tr, tc)) {
-                  self.deselectCell();
-                  self.trySwap(sr, sc, tr, tc);
-                }
-              }
+              self.startDrag(row, col, t.clientX, t.clientY);
             }, false);
             self.renderCell(cell, row, col);
           }
@@ -268,18 +265,6 @@ var Game = {
       return;
     }
     renderGem(el, gem.type, gem.special);
-    if (gem.special !== 'none') {
-      var badge = document.createElement('span');
-      badge.className = 'gem-special-badge';
-      var badges = {
-        row: '⚡',
-        col: '⚡',
-        bomb: '💣',
-        rainbow: '🌈'
-      };
-      badge.textContent = badges[gem.special] || '';
-      el.appendChild(badge);
-    }
     el.style.setProperty('--gem-glow', getGemGlow(gem.type));
   },
   refreshBoard: function refreshBoard() {
@@ -341,29 +326,26 @@ var Game = {
     self.state = STATE.ANIMATING;
     self.board.swap(r1, c1, r2, c2);
     self.animateSwap(r1, c1, r2, c2);
-    return self.delay(200).then(function () {
+    return self.delay(240).then(function () {
       var matches = self.board.findMatches();
       if (matches.length === 0) {
-        self.board.swap(r1, c1, r2, c2);
-        self.refreshBoard();
-        var el1 = cellEl(self.cellEls, r1, c1);
-        var el2 = cellEl(self.cellEls, r2, c2);
-        if (el1) {
-          el1.classList.add('invalid-swap');
-          setTimeout(function () {
-            el1.classList.remove('invalid-swap');
-          }, 400);
-        }
-        if (el2) {
-          el2.classList.add('invalid-swap');
-          setTimeout(function () {
-            el2.classList.remove('invalid-swap');
-          }, 400);
-        }
-        return self.delay(350).then(function () {
-          self.state = STATE.PLAYING;
+        // Slide back, then shake
+        self.animateSwapReverse(r1, c1, r2, c2);
+        return self.delay(180).then(function () {
+          self.board.swap(r1, c1, r2, c2);
+          self.clearSwapTransforms(r1, c1, r2, c2);
+          self.refreshBoard();
+          var el1 = cellEl(self.cellEls, r1, c1);
+          var el2 = cellEl(self.cellEls, r2, c2);
+          if (el1) { el1.classList.add('invalid-swap'); setTimeout(function () { el1.classList.remove('invalid-swap'); }, 380); }
+          if (el2) { el2.classList.add('invalid-swap'); setTimeout(function () { el2.classList.remove('invalid-swap'); }, 380); }
+          return self.delay(340).then(function () {
+            self.state = STATE.PLAYING;
+          });
         });
       }
+      self.clearSwapTransforms(r1, c1, r2, c2);
+      self.refreshBoard();
       if (self.currentLevel.moves) {
         self.moves--;
         self.updateHUD();
@@ -456,18 +438,163 @@ var Game = {
       });
     });
   },
+  // ─── Drag Ghost ───────────────────────────────────────────────
+  startDrag: function startDrag(row, col, clientX, clientY) {
+    var self = this;
+    if (self.state !== STATE.PLAYING) return;
+    if (self.board.isBlocked(row, col)) return;
+    self._dragging = true;
+    self._dragRow = row;
+    self._dragCol = col;
+    self._dragStartX = clientX;
+    self._dragStartY = clientY;
+    self._dragTargetRow = -1;
+    self._dragTargetCol = -1;
+    var srcCell = cellEl(self.cellEls, row, col);
+    if (!srcCell) return;
+    // Create ghost clone
+    var ghost = document.createElement('div');
+    ghost.className = 'gem-ghost';
+    ghost.innerHTML = srcCell.innerHTML;
+    ghost.style.left = clientX + 'px';
+    ghost.style.top = clientY + 'px';
+    document.body.appendChild(ghost);
+    self._dragGhost = ghost;
+    srcCell.classList.add('dragging');
+    // Global handlers
+    self._onMouseMoveDrag = function (e) { self.moveDrag(e.clientX, e.clientY); };
+    self._onMouseUpDrag = function (e) {
+      self.endDrag(e.clientX, e.clientY);
+      document.removeEventListener('mousemove', self._onMouseMoveDrag, false);
+      document.removeEventListener('mouseup', self._onMouseUpDrag, false);
+    };
+    self._onTouchMoveDrag = function (e) {
+      if (e.touches.length > 0) self.moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+    };
+    self._onTouchEndDrag = function (e) {
+      var t = e.changedTouches[0];
+      self.endDrag(t.clientX, t.clientY);
+      document.removeEventListener('touchmove', self._onTouchMoveDrag, false);
+      document.removeEventListener('touchend', self._onTouchEndDrag, false);
+    };
+    document.addEventListener('mousemove', self._onMouseMoveDrag, false);
+    document.addEventListener('mouseup', self._onMouseUpDrag, false);
+    document.addEventListener('touchmove', self._onTouchMoveDrag, false);
+    document.addEventListener('touchend', self._onTouchEndDrag, false);
+  },
+  moveDrag: function moveDrag(clientX, clientY) {
+    var self = this;
+    if (!self._dragging) return;
+    if (self._dragGhost) {
+      self._dragGhost.style.left = clientX + 'px';
+      self._dragGhost.style.top = clientY + 'px';
+    }
+    // Find cell under cursor (hide ghost briefly so it doesn't block elementFromPoint)
+    if (self._dragLastOverEl) {
+      self._dragLastOverEl.classList.remove('drag-over');
+      self._dragLastOverEl = null;
+    }
+    self._dragTargetRow = -1;
+    self._dragTargetCol = -1;
+    if (self._dragGhost) self._dragGhost.style.visibility = 'hidden';
+    var elUnder = document.elementFromPoint(clientX, clientY);
+    if (self._dragGhost) self._dragGhost.style.visibility = '';
+    var targetCell = elUnder ? findGemCell(elUnder) : null;
+    if (targetCell) {
+      var tr = parseInt(targetCell.getAttribute('data-row'));
+      var tc = parseInt(targetCell.getAttribute('data-col'));
+      if (!isNaN(tr) && !isNaN(tc) &&
+          !(tr === self._dragRow && tc === self._dragCol) &&
+          self.board.isAdjacent(self._dragRow, self._dragCol, tr, tc) &&
+          !self.board.isBlocked(tr, tc)) {
+        targetCell.classList.add('drag-over');
+        self._dragLastOverEl = targetCell;
+        self._dragTargetRow = tr;
+        self._dragTargetCol = tc;
+      }
+    }
+  },
+  endDrag: function endDrag(clientX, clientY) {
+    var self = this;
+    if (!self._dragging) return;
+    self._dragging = false;
+    if (self._dragGhost && self._dragGhost.parentNode) {
+      self._dragGhost.parentNode.removeChild(self._dragGhost);
+    }
+    self._dragGhost = null;
+    if (self._dragLastOverEl) {
+      self._dragLastOverEl.classList.remove('drag-over');
+      self._dragLastOverEl = null;
+    }
+    var srcCell = cellEl(self.cellEls, self._dragRow, self._dragCol);
+    if (srcCell) srcCell.classList.remove('dragging');
+    var dx = clientX - self._dragStartX;
+    var dy = clientY - self._dragStartY;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 8) {
+      self.onCellClick(self._dragRow, self._dragCol);
+      return;
+    }
+    if (self._dragTargetRow >= 0 && self._dragTargetCol >= 0 && self.state === STATE.PLAYING) {
+      self.deselectCell();
+      self.trySwap(self._dragRow, self._dragCol, self._dragTargetRow, self._dragTargetCol);
+    }
+    self._dragTargetRow = -1;
+    self._dragTargetCol = -1;
+  },
   // ─── Animations ───────────────────────────────────────────────
   animateSwap: function animateSwap(r1, c1, r2, c2) {
-    var self = this;
-    var el1 = cellEl(self.cellEls, r1, c1);
-    var el2 = cellEl(self.cellEls, r2, c2);
-    if (el1) el1.classList.add('swapping');
-    if (el2) el2.classList.add('swapping');
-    setTimeout(function () {
-      self.refreshBoard();
-      if (el1) el1.classList.remove('swapping');
-      if (el2) el2.classList.remove('swapping');
-    }, 200);
+    var el1 = cellEl(this.cellEls, r1, c1);
+    var el2 = cellEl(this.cellEls, r2, c2);
+    if (!el1 || !el2) return;
+    var cs = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(cs.getPropertyValue('--cell-size')) || 56;
+    var gap = parseInt(cs.getPropertyValue('--cell-gap')) || 2;
+    var step = cellSize + gap;
+    var dx = (c2 - c1) * step;
+    var dy = (r2 - r1) * step;
+    var ease = 'cubic-bezier(0.34,1.56,0.64,1)';
+    var dur = '0.22s';
+    el1.style.webkitTransition = '-webkit-transform ' + dur + ' ' + ease;
+    el1.style.transition = 'transform ' + dur + ' ' + ease;
+    el1.style.webkitTransform = 'translate(' + dx + 'px,' + dy + 'px)';
+    el1.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+    el1.style.zIndex = '20';
+    el2.style.webkitTransition = '-webkit-transform ' + dur + ' ' + ease;
+    el2.style.transition = 'transform ' + dur + ' ' + ease;
+    el2.style.webkitTransform = 'translate(' + (-dx) + 'px,' + (-dy) + 'px)';
+    el2.style.transform = 'translate(' + (-dx) + 'px,' + (-dy) + 'px)';
+  },
+  animateSwapReverse: function animateSwapReverse(r1, c1, r2, c2) {
+    var el1 = cellEl(this.cellEls, r1, c1);
+    var el2 = cellEl(this.cellEls, r2, c2);
+    var ease = 'cubic-bezier(0.4,0,0.6,1)';
+    var dur = '0.16s';
+    if (el1) {
+      el1.style.webkitTransition = '-webkit-transform ' + dur + ' ' + ease;
+      el1.style.transition = 'transform ' + dur + ' ' + ease;
+      el1.style.webkitTransform = 'translate(0,0)';
+      el1.style.transform = 'translate(0,0)';
+      el1.style.zIndex = '';
+    }
+    if (el2) {
+      el2.style.webkitTransition = '-webkit-transform ' + dur + ' ' + ease;
+      el2.style.transition = 'transform ' + dur + ' ' + ease;
+      el2.style.webkitTransform = 'translate(0,0)';
+      el2.style.transform = 'translate(0,0)';
+    }
+  },
+  clearSwapTransforms: function clearSwapTransforms(r1, c1, r2, c2) {
+    var els = [cellEl(this.cellEls, r1, c1), cellEl(this.cellEls, r2, c2)];
+    for (var i = 0; i < els.length; i++) {
+      if (els[i]) {
+        els[i].style.webkitTransition = '';
+        els[i].style.transition = '';
+        els[i].style.webkitTransform = '';
+        els[i].style.transform = '';
+        els[i].style.zIndex = '';
+      }
+    }
   },
   showCombo: function showCombo(text) {
     var self = this;

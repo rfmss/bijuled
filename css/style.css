@@ -436,13 +436,74 @@ html, body {
   flex-shrink: 0;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
+/* ── Gem state animations ───────────────────────────────── */
+@-webkit-keyframes gemSelectPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(217,119,87,0.6), 0 0 0 1px rgba(217,119,87,0.4); }
+  50%       { box-shadow: 0 0 26px rgba(217,119,87,1.0), 0 0 0 2px rgba(217,119,87,0.8); }
+}
+@keyframes gemSelectPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(217,119,87,0.6), 0 0 0 1px rgba(217,119,87,0.4); }
+  50%       { box-shadow: 0 0 26px rgba(217,119,87,1.0), 0 0 0 2px rgba(217,119,87,0.8); }
+}
+@-webkit-keyframes gemPop {
+  0%   { -webkit-transform: scale(1);   opacity: 1; }
+  40%  { -webkit-transform: scale(1.35); opacity: 1; }
+  100% { -webkit-transform: scale(0);   opacity: 0; }
+}
+@keyframes gemPop {
+  0%   { transform: scale(1);    opacity: 1; }
+  40%  { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(0);    opacity: 0; }
+}
+@-webkit-keyframes gemShake {
+  0%, 100% { -webkit-transform: translateX(0); }
+  20%       { -webkit-transform: translateX(-7px); }
+  40%       { -webkit-transform: translateX(7px); }
+  60%       { -webkit-transform: translateX(-4px); }
+  80%       { -webkit-transform: translateX(4px); }
+}
+@keyframes gemShake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-7px); }
+  40%       { transform: translateX(7px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+@-webkit-keyframes gemAppear {
+  0%   { -webkit-transform: scale(0) rotate(-15deg); opacity: 0; }
+  60%  { -webkit-transform: scale(1.2) rotate(4deg);  opacity: 1; }
+  100% { -webkit-transform: scale(1) rotate(0);       opacity: 1; }
+}
+@keyframes gemAppear {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0);      opacity: 1; }
+}
+@-webkit-keyframes scoreFloat {
+  0%   { -webkit-transform: translateX(-50%) translateY(0);    opacity: 1; }
+  100% { -webkit-transform: translateX(-50%) translateY(-44px); opacity: 0; }
+}
+@keyframes scoreFloat {
+  0%   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-44px); opacity: 0; }
+}
+
 .gem-cell.selected {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
   z-index: 10;
-  background: rgba(217,119,87,0.2);
+  background: rgba(217,119,87,0.22);
   border-color: #d97757;
-  box-shadow: 0 0 12px rgba(217,119,87,0.5);
+  -webkit-animation: gemSelectPulse 0.9s ease-in-out infinite;
+  animation: gemSelectPulse 0.9s ease-in-out infinite;
+}
+.gem-cell.matched .gem-svg {
+  -webkit-animation: gemPop 0.28s cubic-bezier(0.6,0,1,0.6) both;
+  animation: gemPop 0.28s cubic-bezier(0.6,0,1,0.6) both;
+}
+.gem-cell.invalid-swap {
+  -webkit-animation: gemShake 0.36s ease both;
+  animation: gemShake 0.36s ease both;
 }
 .gem-cell.hint { border-color: rgba(217,119,87,0.5); }
 .gem-cell.blocked { background: rgba(0,0,0,0.4) !important; border-color: transparent; cursor: default; }
@@ -452,8 +513,63 @@ html, body {
   opacity: 0;
 }
 .gem-cell.falling {
-  -webkit-transition: top 0.25s ease, -webkit-transform 0.12s;
-  transition: top 0.25s ease, transform 0.12s;
+  -webkit-transition: -webkit-transform 0.12s;
+  transition: transform 0.12s;
+}
+
+/* Score popup */
+.score-popup {
+  position: absolute;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f0d870;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-animation: scoreFloat 0.95s cubic-bezier(0,0,0.2,1) both;
+  animation: scoreFloat 0.95s cubic-bezier(0,0,0.2,1) both;
+}
+
+/* Drag ghost */
+.gem-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2000;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  -webkit-transform: translate(-50%, -50%) scale(1.22);
+  transform: translate(-50%, -50%) scale(1.22);
+  -webkit-filter: drop-shadow(0 10px 28px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 10px 28px rgba(0,0,0,0.8));
+  opacity: 0.9;
+}
+.gem-ghost .gem-svg {
+  width: calc(var(--cell-size) - 4px);
+  height: calc(var(--cell-size) - 4px);
+}
+.gem-cell.dragging {
+  opacity: 0.28;
+  -webkit-transform: scale(0.82) !important;
+  transform: scale(0.82) !important;
+  -webkit-transition: -webkit-transform 0.1s, opacity 0.1s !important;
+  transition: transform 0.1s, opacity 0.1s !important;
+}
+.gem-cell.drag-over {
+  background: rgba(217,119,87,0.3) !important;
+  border-color: rgba(217,119,87,0.75) !important;
+  -webkit-transform: scale(1.12) !important;
+  transform: scale(1.12) !important;
+  box-shadow: 0 0 16px rgba(217,119,87,0.55);
 }
 
 /* Gem types — warm rfmss palette */
