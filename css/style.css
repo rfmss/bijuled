@@ -396,8 +396,10 @@ html, body {
   display: flex;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+  width: calc(8 * var(--cell-size) + 8 * var(--cell-gap));
   -webkit-user-select: none;
   user-select: none;
+  touch-action: none;
 }
 #particle-canvas {
   position: absolute;
