@@ -114,6 +114,7 @@ var Game = {
   setupMenuListeners: function setupMenuListeners() {
     var self = this;
     document.getElementById('btn-play').addEventListener('click', function () {
+      RadioBG.init({ volume: 0.22 });
       var next = Math.min(self.progress.data.maxLevel, 50);
       self.startLevel(next);
     });
@@ -165,6 +166,7 @@ var Game = {
           else if (!unlocked) btn.classList.add('locked');
           if (completed || unlocked) {
             btn.addEventListener('click', function () {
+              RadioBG.init({ volume: 0.22 });
               self.startLevel(levelId);
             });
           }
