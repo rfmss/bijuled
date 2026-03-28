@@ -13,7 +13,7 @@
   --found:     #5a8a6a;
   --border:    rgba(0,0,0,0.08);
   --radius:    12px;
-  --cell-size: 56px;
+  --cell-size: 60px;
   --cell-gap:  2px;
 }
 
@@ -996,16 +996,16 @@ html, body {
 /* ── Responsive ─────────────────────────────────────────── */
 /* Large desktop: tela alta o suficiente */
 @media screen and (min-width: 601px) and (min-height: 900px) {
-  :root { --cell-size: 68px; --cell-gap: 3px; }
+  :root { --cell-size: 72px; --cell-gap: 3px; }
 }
 /* ≤ 600px phones */
 @media screen and (max-width: 600px) {
-  :root { --cell-size: 44px; --cell-gap: 2px; }
+  :root { --cell-size: 50px; --cell-gap: 2px; }
   .board-container { padding: 6px; }
 }
 /* ≤ 430px small phones */
 @media screen and (max-width: 430px) {
-  :root { --cell-size: 40px; --cell-gap: 2px; }
+  :root { --cell-size: 44px; --cell-gap: 2px; }
   .board-container { padding: 4px; }
 }
 /* ≤ 360px budget phones */

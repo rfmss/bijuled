@@ -53,19 +53,42 @@ var Compliments = (function () {
   var voiceReady = false;
   var ptVoice    = null;
 
+  // Nomes de vozes masculinas conhecidas nos sistemas operacionais
+  var MALE_NAMES = ['luciano','daniel','reed','jorge','carlos','rodrigo','google uk english male','google us english male'];
+
+  function isMaleVoice(v) {
+    var name = v.name.toLowerCase();
+    if (name.indexOf('female') !== -1 || name.indexOf('feminina') !== -1) return false;
+    if (name.indexOf('male') !== -1 && name.indexOf('female') === -1) return true;
+    for (var i = 0; i < MALE_NAMES.length; i++) {
+      if (name.indexOf(MALE_NAMES[i]) !== -1) return true;
+    }
+    return false;
+  }
+
   function loadVoice() {
     if (!window.speechSynthesis) return;
     var load = function () {
       var voices = speechSynthesis.getVoices();
+      var ptBrMale = null;   // pt-BR + masculina
+      var ptMale   = null;   // pt (qualquer) + masculina
+      var ptBrAny  = null;   // pt-BR qualquer
+      var ptAny    = null;   // pt qualquer
+
       for (var i = 0; i < voices.length; i++) {
         var v = voices[i];
-        if (v.lang.indexOf('pt') === 0) {
-          // prefere voz masculina, senão pega qualquer pt
-          if (!ptVoice || v.name.toLowerCase().indexOf('male') !== -1) {
-            ptVoice = v;
-          }
-        }
+        var lang = v.lang.toLowerCase();
+        var isPtBr = (lang === 'pt-br' || lang === 'pt_br');
+        var isPt   = (lang.indexOf('pt') === 0);
+        var male   = isMaleVoice(v);
+
+        if (isPtBr && male && !ptBrMale) ptBrMale = v;
+        if (isPt   && male && !ptMale)   ptMale   = v;
+        if (isPtBr && !ptBrAny)          ptBrAny  = v;
+        if (isPt   && !ptAny)            ptAny    = v;
       }
+      // hierarquia de preferência
+      ptVoice = ptBrMale || ptMale || ptBrAny || ptAny;
       voiceReady = true;
     };
     if (speechSynthesis.getVoices().length > 0) {
@@ -80,9 +103,9 @@ var Compliments = (function () {
     speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
     u.lang    = 'pt-BR';
-    u.pitch   = 0.88;   // tom mais grave (masculino)
-    u.rate    = 0.82;   // cadência mais lenta e calorosa
-    u.volume  = 0.75;
+    u.pitch   = 0.72;   // grave, aveludado
+    u.rate    = 0.80;   // cadência pausada e calorosa
+    u.volume  = 0.80;
     if (ptVoice) u.voice = ptVoice;
     speechSynthesis.speak(u);
   }
