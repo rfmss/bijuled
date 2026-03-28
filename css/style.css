@@ -550,6 +550,7 @@ button {
   justify-content: center;
   padding: 12px 20px;
   min-height: 0;
+  overflow: hidden;
 }
 
 .board-frame {
@@ -1023,6 +1024,16 @@ button {
     --cell-gap: 3px;
     --board-padding: 5px;
   }
+}
+
+/* Very small phones (≤ 430px) — board must fit inside viewport */
+@media screen and (max-width: 430px) {
+  :root {
+    --cell-size: 42px;
+    --cell-gap: 2px;
+    --board-padding: 4px;
+  }
+  .board-container { padding: 4px 6px; }
 }
 
 /* Landscape on iPad mini 2 (1024×768) */

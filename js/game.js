@@ -216,10 +216,11 @@ var Game = {
     this.cellEls = [];
 
     var canvas = document.getElementById('particle-canvas');
-    var cellSize = 72;
-    var cellGap = 4;
-    var boardPad = 8;
-    var boardPx = 8 * cellSize + 7 * cellGap;
+    var _cs = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_cs.getPropertyValue('--cell-size')) || 72;
+    var cellGap  = parseInt(_cs.getPropertyValue('--cell-gap'))  || 4;
+    var boardPad = parseInt(_cs.getPropertyValue('--board-padding')) || 8;
+    var boardPx = 8 * cellSize + 8 * cellGap;
     var framePx = boardPx + 2 * boardPad;
     canvas.width = framePx;
     canvas.height = framePx;
@@ -506,12 +507,15 @@ var Game = {
   showScorePopup: function(score, r, c) {
     var boardFrame = document.querySelector('.board-frame');
     if (!boardFrame) return;
-    var cellSize = 76;
+    var _cs = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_cs.getPropertyValue('--cell-size')) || 72;
+    var cellGap  = parseInt(_cs.getPropertyValue('--cell-gap'))  || 4;
+    var boardPad = parseInt(_cs.getPropertyValue('--board-padding')) || 8;
     var popup = document.createElement('div');
     popup.className = 'score-popup';
     popup.textContent = '+' + score;
-    popup.style.left = (c * cellSize + cellSize / 2 + 8) + 'px';
-    popup.style.top = (r * cellSize + cellSize / 2 + 8) + 'px';
+    popup.style.left = (boardPad + c * (cellSize + cellGap) + cellSize / 2) + 'px';
+    popup.style.top  = (boardPad + r * (cellSize + cellGap) + cellSize / 2) + 'px';
     boardFrame.appendChild(popup);
     setTimeout(function() { if (popup.parentNode) popup.parentNode.removeChild(popup); }, 1000);
   },
@@ -521,9 +525,10 @@ var Game = {
     var canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
-    var cellSize = 72;
-    var gap = 4;
-    var padding = 8;
+    var _cs = getComputedStyle(document.documentElement);
+    var cellSize = parseInt(_cs.getPropertyValue('--cell-size')) || 72;
+    var gap      = parseInt(_cs.getPropertyValue('--cell-gap'))  || 4;
+    var padding  = parseInt(_cs.getPropertyValue('--board-padding')) || 8;
 
     var particles = [];
     var self = this;
