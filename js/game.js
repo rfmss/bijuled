@@ -104,6 +104,7 @@ var Game = {
   },
   renderBgGems: function renderBgGems() {
     var container = document.getElementById('bg-gems');
+    if (!container) return;
     container.innerHTML = '';
     for (var i = 0; i < 16; i++) {
       var div = document.createElement('div');
