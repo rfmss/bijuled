@@ -465,6 +465,30 @@ html, body {
   -webkit-transform: translateY(1px);
   transform: translateY(1px);
 }
+.gem-type-0 .gem-emoji {
+  -webkit-transform: translateY(1px) rotate(0deg);
+  transform: translateY(1px) rotate(0deg);
+}
+.gem-type-1 .gem-emoji {
+  -webkit-transform: translateY(1px) rotate(10deg) scale(1.02);
+  transform: translateY(1px) rotate(10deg) scale(1.02);
+}
+.gem-type-2 .gem-emoji {
+  -webkit-transform: translateY(1px) rotate(-8deg) scale(1.04);
+  transform: translateY(1px) rotate(-8deg) scale(1.04);
+}
+.gem-type-3 .gem-emoji {
+  -webkit-transform: translateY(0px) rotate(4deg) scale(1.01);
+  transform: translateY(0px) rotate(4deg) scale(1.01);
+}
+.gem-type-4 .gem-emoji {
+  -webkit-transform: translateY(1px) rotate(-12deg) scale(1.03);
+  transform: translateY(1px) rotate(-12deg) scale(1.03);
+}
+.gem-type-5 .gem-emoji {
+  -webkit-transform: translateY(0px) rotate(0deg) scale(1.05);
+  transform: translateY(0px) rotate(0deg) scale(1.05);
+}
 .gem-badge,
 .gem-special-row::after,
 .gem-special-col::after,

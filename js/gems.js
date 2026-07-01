@@ -4,11 +4,11 @@
  */
 
 var GEM_EMOJIS = {
-  ruby: '🔴',
-  emerald: '🟢',
-  sapphire: '🔵',
-  topaz: '🟡',
-  amethyst: '🟣',
+  ruby: '♦️',
+  emerald: '🔶',
+  sapphire: '🔷',
+  topaz: '💠',
+  amethyst: '🔹',
   diamond: '💎'
 };
 
@@ -105,6 +105,7 @@ function renderGem(container, typeId) {
   if (!type) return;
   clearGemClasses(container);
   container.classList.add('gem-' + typeId);
+  container.classList.add('gem-type-' + typeId);
   if (special && special !== 'none') container.classList.add('gem-special-' + special);
   container.innerHTML = createGem(type, special);
   container.style.setProperty('--gem-glow', getGemGlow(typeId));
