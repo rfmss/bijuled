@@ -116,6 +116,24 @@ html, body {
 }
 .btn-icon-wrap { margin-right: 8px; }
 .btn-icon-wrap svg { display: block; }
+.icon-emoji {
+  display: block;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.icon-emoji-sm {
+  font-size: 18px;
+}
+.logo-icon-emoji {
+  display: inline-block;
+  font-size: 72px;
+  line-height: 1;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  -webkit-transform: translateY(1px);
+  transform: translateY(1px);
+}
 
 /* ── MENU SCREEN ────────────────────────────────────────── */
 #screen-menu {
@@ -432,17 +450,51 @@ html, body {
   position: relative;
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
+  overflow: hidden;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.06);
 }
-.gem-svg {
-  width: calc(var(--cell-size) - 8px);
-  height: calc(var(--cell-size) - 8px);
+.gem-emoji {
   display: block;
-  -webkit-flex-shrink: 0;
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-size: calc(var(--cell-size) * 0.58);
+  line-height: 1;
+  -webkit-user-select: none;
+  user-select: none;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.28);
+  -webkit-transform: translateY(1px);
+  transform: translateY(1px);
 }
+.gem-badge,
+.gem-special-row::after,
+.gem-special-col::after,
+.gem-special-bomb::after,
+.gem-special-rainbow::after {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.88);
+  color: #1a1a1a;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.32);
+  z-index: 2;
+}
+.gem-special-row::after { content: '↔'; }
+.gem-special-col::after { content: '↕'; }
+.gem-special-bomb::after { content: '💥'; }
+.gem-special-rainbow::after { content: '🌈'; }
 /* ── Gem state animations ───────────────────────────────── */
 @-webkit-keyframes gemSelectPulse {
   0%, 100% { box-shadow: 0 0 10px rgba(217,119,87,0.6), 0 0 0 1px rgba(217,119,87,0.4); }
@@ -504,7 +556,7 @@ html, body {
   -webkit-animation: gemSelectPulse 0.9s ease-in-out infinite;
   animation: gemSelectPulse 0.9s ease-in-out infinite;
 }
-.gem-cell.matched .gem-svg {
+.gem-cell.matched .gem-emoji {
   -webkit-animation: gemPop 0.28s cubic-bezier(0.6,0,1,0.6) both;
   animation: gemPop 0.28s cubic-bezier(0.6,0,1,0.6) both;
 }
@@ -605,9 +657,8 @@ html, body {
   filter: drop-shadow(0 10px 28px rgba(0,0,0,0.8));
   opacity: 0.9;
 }
-.gem-ghost .gem-svg {
-  width: calc(var(--cell-size) - 4px);
-  height: calc(var(--cell-size) - 4px);
+.gem-ghost .gem-emoji {
+  font-size: calc(var(--cell-size) * 0.62);
 }
 .gem-cell.dragging {
   opacity: 0.28;
@@ -768,6 +819,11 @@ html, body {
   transition: color 0.18s;
   position: relative;
   z-index: 1;
+}
+.boost-icon-emoji {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
 }
 .boost-btn.active-boost .boost-icon { color: #d97757; }
 

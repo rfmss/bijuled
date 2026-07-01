@@ -263,6 +263,7 @@ var Game = {
   renderCell: function renderCell(el, r, c) {
     var gem = this.board.getCell(r, c);
     if (!gem) {
+      clearGemClasses(el);
       el.innerHTML = '';
       return;
     }
@@ -434,13 +435,13 @@ var Game = {
         newGems.forEach(function (ng) {
           var el = cellEl(self.cellEls, ng.r, ng.c);
           if (el) {
-            var svg = el.querySelector('.gem-svg');
-            if (svg) {
-              svg.style.webkitAnimation = 'none';
-              svg.style.animation = 'none';
+            var gem = el.querySelector('.gem-emoji');
+            if (gem) {
+              gem.style.webkitAnimation = 'none';
+              gem.style.animation = 'none';
               requestAnimationFrame(function () {
-                svg.style.webkitAnimation = 'gemAppear 0.3s cubic-bezier(0.34,1.56,0.64,1) both';
-                svg.style.animation = 'gemAppear 0.3s cubic-bezier(0.34,1.56,0.64,1) both';
+                gem.style.webkitAnimation = 'gemAppear 0.3s cubic-bezier(0.34,1.56,0.64,1) both';
+                gem.style.animation = 'gemAppear 0.3s cubic-bezier(0.34,1.56,0.64,1) both';
               });
             }
           }
