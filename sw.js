@@ -3,7 +3,7 @@
  * Cache-first: o jogo inteiro funciona offline após a primeira visita.
  * Bump CACHE_VERSION a cada release pra invalidar o cache antigo.
  */
-var CACHE_VERSION = 'bijuled-v1';
+var CACHE_VERSION = 'bijuled-v2';
 
 var CORE_ASSETS = [
   '.',
@@ -27,6 +27,17 @@ var CORE_ASSETS = [
   'assets/emojis/skull.png',
   'assets/emojis/heartfire.png',
   'assets/emojis/robot.png',
+  'assets/emojis/anim/angry.webp',
+  'assets/emojis/anim/nauseated.webp',
+  'assets/emojis/anim/cold.webp',
+  'assets/emojis/anim/grinning.webp',
+  'assets/emojis/anim/devil.webp',
+  'assets/emojis/anim/ghost.webp',
+  'assets/emojis/anim/invader.webp',
+  'assets/emojis/anim/alien.webp',
+  'assets/emojis/anim/skull.webp',
+  'assets/emojis/anim/heartfire.webp',
+  'assets/emojis/anim/robot.webp',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
   'assets/icons/icon-maskable-512.png',

@@ -5,6 +5,37 @@
  */
 
 var EMOJI_PATH = 'assets/emojis/';
+var EMOJI_ANIM_PATH = 'assets/emojis/anim/';
+
+// WebP animado (repo oficial microsoft/fluentui-emoji-animated, MIT).
+// Detecção assíncrona: navegadores sem suporte (Safari < 14) seguem
+// com os PNGs estáticos — mais leve pra hardware antigo.
+var EMOJI_ANIMATED = false;
+(function detectAnimatedWebP() {
+  var img = new Image();
+  img.onload = function () {
+    if (img.width > 0 && img.height > 0) {
+      EMOJI_ANIMATED = true;
+      GEMS.forEach(function (g) {
+        var pre = new Image();
+        pre.src = emojiSrc(g.file);
+      });
+      Object.keys(SPECIAL_GEMS).forEach(function (k) {
+        var pre = new Image();
+        pre.src = emojiSrc(SPECIAL_GEMS[k].file);
+      });
+      if (typeof Game !== 'undefined' && Game.board && Game.refreshBoard) {
+        try { Game.refreshBoard(); } catch (e) {}
+      }
+    }
+  };
+  img.src = 'data:image/webp;base64,UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA';
+})();
+
+function emojiSrc(file) {
+  if (EMOJI_ANIMATED) return EMOJI_ANIM_PATH + file.replace(/\.png$/, '.webp');
+  return EMOJI_PATH + file;
+}
 
 var GEMS = [{
   id: 0,
@@ -99,9 +130,9 @@ function createGem(type) {
   if (special !== 'none' && SPECIAL_GEMS[special]) {
     var sp = SPECIAL_GEMS[special];
     var badge = sp.badge ? "<span class=\"gem-sp-badge\">" + sp.badge + "</span>" : '';
-    return "<span class=\"gem-special gem-sp-" + special + "\" style=\"--type-color:" + gem.color + "\">" + "<img class=\"gem-emoji\" src=\"" + EMOJI_PATH + sp.file + "\" alt=\"" + gem.label + " especial\" draggable=\"false\">" + badge + "</span>";
+    return "<span class=\"gem-special gem-sp-" + special + "\" style=\"--type-color:" + gem.color + "\">" + "<img class=\"gem-emoji\" src=\"" + emojiSrc(sp.file) + "\" alt=\"" + gem.label + " especial\" draggable=\"false\">" + badge + "</span>";
   }
-  return "<img class=\"gem-emoji\" src=\"" + EMOJI_PATH + gem.file + "\" alt=\"" + gem.label + "\" draggable=\"false\">";
+  return "<img class=\"gem-emoji\" src=\"" + emojiSrc(gem.file) + "\" alt=\"" + gem.label + "\" draggable=\"false\">";
 }
 
 /**

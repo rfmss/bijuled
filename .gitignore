@@ -1,0 +1,7 @@
+# Android/TWA build (bubblewrap) — só o twa-manifest.json é versionado
+android/*
+!android/twa-manifest.json
+
+# Nunca commitar chaves
+*.keystore
+.keystore-password.txt

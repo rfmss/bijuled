@@ -83,11 +83,11 @@ python3 -m http.server 8080
 
 - **Vanilla JS (ES5)** — roda até em iPad mini 2012 / iOS 9.3.5, sem framework, sem bundler
 - **Engine match-3 própria** ([js/board.js](js/board.js)) — matches, cascatas, gravidade com células bloqueadas, detecção de T/L
-- **Fluent Emoji 3D** da Microsoft como arte das peças, servidos localmente
+- **Fluent Emoji animados** (WebP 128px, ~270 KB cada) com fallback automático pros PNGs 3D estáticos em navegadores antigos — que também poupa CPU de hardware velho
 - **PWA** — manifest + service worker cache-first, jogável offline
 
 ## Créditos & licenças
 
-- Arte das peças: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) © Microsoft — licença MIT
+- Arte das peças: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) e [Fluent Emoji Animated](https://github.com/microsoft/fluentui-emoji-animated) © Microsoft — licença MIT
 - Rádio: streams públicos de MPB e clássicos internacionais
 - Feito com 🧡 por [rfmss](https://github.com/rfmss)

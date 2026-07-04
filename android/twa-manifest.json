@@ -1,0 +1,42 @@
+{
+  "packageId": "io.github.rfmss.bijuled",
+  "host": "rfmss.github.io",
+  "name": "Bijuled",
+  "launcherName": "Bijuled",
+  "display": "standalone",
+  "themeColor": "#1A1410",
+  "themeColorDark": "#1A1410",
+  "navigationColor": "#1A1410",
+  "navigationColorDark": "#1A1410",
+  "navigationDividerColor": "#1A1410",
+  "navigationDividerColorDark": "#1A1410",
+  "backgroundColor": "#1A1410",
+  "enableNotifications": false,
+  "startUrl": "/bijuled/",
+  "iconUrl": "http://127.0.0.1:8471/assets/icons/icon-512.png",
+  "maskableIconUrl": "http://127.0.0.1:8471/assets/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://rfmss.github.io/bijuled/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://rfmss.github.io/bijuled/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": []
+}
