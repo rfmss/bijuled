@@ -319,16 +319,17 @@ html, body {
 .hud-label {
   display: block;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #555;
+  color: #444;
 }
 .hud-value {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.1rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: #1a1a1a;
+  line-height: 1.1;
 }
 .hud-value.gold { color: #d97757; }
 .hud-lives {
@@ -337,7 +338,7 @@ html, body {
 }
 .hud-lives > * + * { margin-left: 2px; }
 .life-heart {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: rgba(26,26,26,0.2);
 }
 .life-heart.active { color: #d97757; }
@@ -456,12 +457,15 @@ html, body {
 }
 .gem-emoji {
   display: block;
-  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
-  font-size: calc(var(--cell-size) * 0.58);
-  line-height: 1;
+  width: calc(var(--cell-size) - 8px);
+  height: calc(var(--cell-size) - 8px);
+  object-fit: contain;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
   -webkit-user-select: none;
   user-select: none;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.28);
+  -webkit-user-drag: none;
   -webkit-transform: translateY(1px);
   transform: translateY(1px);
 }
@@ -489,36 +493,6 @@ html, body {
   -webkit-transform: translateY(0px) rotate(0deg) scale(1.05);
   transform: translateY(0px) rotate(0deg) scale(1.05);
 }
-.gem-badge,
-.gem-special-row::after,
-.gem-special-col::after,
-.gem-special-bomb::after,
-.gem-special-rainbow::after {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.88);
-  color: #1a1a1a;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
-  font-size: 11px;
-  line-height: 1;
-  pointer-events: none;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.32);
-  z-index: 2;
-}
-.gem-special-row::after { content: '↔'; }
-.gem-special-col::after { content: '↕'; }
-.gem-special-bomb::after { content: '💥'; }
-.gem-special-rainbow::after { content: '🌈'; }
 /* ── Gem state animations ───────────────────────────────── */
 @-webkit-keyframes gemSelectPulse {
   0%, 100% { box-shadow: 0 0 10px rgba(217,119,87,0.6), 0 0 0 1px rgba(217,119,87,0.4); }
@@ -682,7 +656,8 @@ html, body {
   opacity: 0.9;
 }
 .gem-ghost .gem-emoji {
-  font-size: calc(var(--cell-size) * 0.62);
+  width: calc(var(--cell-size) - 4px);
+  height: calc(var(--cell-size) - 4px);
 }
 .gem-cell.dragging {
   opacity: 0.28;
@@ -708,19 +683,69 @@ html, body {
 .gem-5 { background: #e8c17a; }
 .gem-6 { background: #a8b87a; }
 
-/* Special gem indicators */
-.gem-special-row:after,
-.gem-special-col:after,
-.gem-special-bomb:after {
+/* ── Fluent emoji special gems ──────────────────────────── */
+/* Creature emoji + colored aura ring (--type-color shows
+   which gem type it still matches with) */
+.gem-special {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.gem-special::before {
   content: '';
   position: absolute;
-  width: 60%;
-  height: 60%;
+  inset: 3%;
   border-radius: 50%;
-  background: rgba(255,255,255,0.5);
+  border: 2px solid var(--type-color);
+  box-shadow: 0 0 9px 1px var(--type-color), inset 0 0 7px var(--type-color);
+  pointer-events: none;
+  -webkit-animation: spAuraPulse 1.4s ease-in-out infinite;
+  animation: spAuraPulse 1.4s ease-in-out infinite;
+}
+.gem-special .gem-emoji {
+  width: calc(var(--cell-size) - 14px);
+  height: calc(var(--cell-size) - 14px);
+}
+.gem-sp-rainbow::before {
+  border: 2px solid transparent;
+  background: conic-gradient(#ff5f5f, #ffb02e, #ffe14d, #63c159, #6d9ee8, #a55fd6, #ff5f5f) border-box;
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
+  box-shadow: none;
+  -webkit-animation: spAuraSpin 2.4s linear infinite;
+  animation: spAuraSpin 2.4s linear infinite;
+}
+.gem-sp-badge {
+  position: absolute;
+  bottom: -4%;
+  right: -6%;
+  font-size: calc(var(--cell-size) * 0.32);
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 4px var(--type-color), 0 1px 3px rgba(0,0,0,0.85);
   pointer-events: none;
 }
-.gem-special-bomb:after { border-radius: 4px; }
+@-webkit-keyframes spAuraPulse {
+  0%, 100% { opacity: 0.55; -webkit-transform: scale(1); }
+  50%       { opacity: 1;    -webkit-transform: scale(1.05); }
+}
+@keyframes spAuraPulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.05); }
+}
+@-webkit-keyframes spAuraSpin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spAuraSpin {
+  to { transform: rotate(360deg); }
+}
 
 /* ── Boost Button Animations ────────────────────────────── */
 @-webkit-keyframes hammerStrike {
