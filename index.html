@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a1410">
+  <meta name="description" content="Match-3 com Fluent Emojis — combine rostinhos, invoque criaturas especiais e vença 50 fases.">
   <title>Bijuled</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css?v=20260701a">
 <script data-goatcounter="https://bijuled.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -216,6 +222,15 @@
   // Random bg from rfmss palette
   var BG = ['#b2c9c3','#c9bfb0','#b8c4ce','#c4bac9','#c9c4b0','#b8c9b8','#cec0b4'];
   document.body.style.backgroundColor = BG[Math.floor(Math.random() * BG.length)];
+  </script>
+
+  <script>
+  // PWA: funciona offline após a primeira visita (iOS 9 ignora, sem SW lá)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
   </script>
 
   <script src="js/gems.js?v=20260701a"></script>
