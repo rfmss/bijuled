@@ -1,6 +1,6 @@
 {
   "packageId": "io.github.rfmss.bijuled",
-  "host": "rfmss.github.io",
+  "host": "rafa.pro.br",
   "name": "Bijuled",
   "launcherName": "Bijuled",
   "display": "standalone",
@@ -24,7 +24,7 @@
   "appVersionCode": 1,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
-  "webManifestUrl": "https://rfmss.github.io/bijuled/manifest.webmanifest",
+  "webManifestUrl": "https://rafa.pro.br/bijuled/manifest.webmanifest",
   "fallbackType": "customtabs",
   "features": {},
   "alphaDependencies": {
@@ -33,7 +33,7 @@
   "enableSiteSettingsShortcut": true,
   "isChromeOSOnly": false,
   "isMetaQuest": false,
-  "fullScopeUrl": "https://rfmss.github.io/bijuled/",
+  "fullScopeUrl": "https://rafa.pro.br/bijuled/",
   "minSdkVersion": 21,
   "orientation": "portrait",
   "fingerprints": [],

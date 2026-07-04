@@ -8,7 +8,7 @@
 
 *Combine. Cascade. Conquiste.*
 
-[Jogar agora](https://rfmss.github.io/bijuled/) · [Como jogar](#como-jogar) · [Instalar como app](#instalar-como-app)
+[Jogar agora](https://rafa.pro.br/bijuled/) · [Como jogar](#como-jogar) · [Instalar como app](#instalar-como-app)
 
 </div>
 
@@ -54,7 +54,7 @@ E ainda: rádio de fundo com MPB e clássicos internacionais 📻, elogios falad
 
 ## Instalar como app
 
-Bijuled é um **PWA**: abra [rfmss.github.io/bijuled](https://rfmss.github.io/bijuled/) no celular e use *"Adicionar à tela inicial"* (Chrome/Safari). O jogo funciona **100% offline** depois da primeira visita.
+Bijuled é um **PWA**: abra [rafa.pro.br/bijuled](https://rafa.pro.br/bijuled/) no celular e use *"Adicionar à tela inicial"* (Chrome/Safari). O jogo funciona **100% offline** depois da primeira visita.
 
 ### Gerar o APK (Android)
 
@@ -62,7 +62,7 @@ O projeto está pronto para virar APK via [Bubblewrap](https://github.com/Google
 
 ```bash
 npm i -g @bubblewrap/cli
-bubblewrap init --manifest https://rfmss.github.io/bijuled/manifest.webmanifest
+bubblewrap init --manifest https://rafa.pro.br/bijuled/manifest.webmanifest
 bubblewrap build
 ```
 
