@@ -13,11 +13,34 @@
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css?v=20260701a">
 <script data-goatcounter="https://bijuled.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!-- Promise polyfill for iOS 9 -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+<!-- Object.assign polyfill for iOS 9 -->
+<script>
+if (typeof Object.assign !== 'function') {
+  Object.assign = function(target) {
+    if (target == null) throw new TypeError('Cannot convert undefined or null to object');
+    var to = Object(target);
+    for (var index = 1; index < arguments.length; index++) {
+      var nextSource = arguments[index];
+      if (nextSource != null) {
+        for (var nextKey in nextSource) {
+          if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+            to[nextKey] = nextSource[nextKey];
+          }
+        }
+      }
+    }
+    return to;
+  };
+}
+</script>
 </head>
 <body>
 
   <!-- MENU -->
   <div id="screen-menu" class="screen active">
+    <div class="bg-gems-float" id="bg-gems"></div>
     <div class="menu-content">
       <div class="logo-block">
         <div class="logo-icon">

@@ -195,7 +195,24 @@ html, body {
   letter-spacing: 0.1em;
   color: rgba(26,26,26,0.4);
 }
-.bg-gems-float { display: none; }
+.bg-gems-float { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-gem-particle {
+  position: absolute;
+  opacity: 0.15;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-120vh) rotate(360deg); }
+}
 .menu-bg { display: none; }
 
 /* ── LEVEL SELECT ───────────────────────────────────────── */
